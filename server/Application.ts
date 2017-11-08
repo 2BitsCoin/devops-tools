@@ -90,7 +90,7 @@ export abstract class Application {
         connects.forEach((connection) => {
             types.forEach((type) => {
                 const data = {
-                    url: `https://${name}.${commit}.${connection}.${type}.${this.hostName}:80`,
+                    url: `https://${name}.${commit}.${connection}.${type}.${this.hostName}`,
                     text: `Branch: "${name}"` + '\n' + `commit: ${commit}` + '\n' + `${connection} ${type}`
                 };
                 const hostData = {
@@ -285,7 +285,7 @@ export abstract class Application {
     }
 
     private checkHost(hostParts: IProjectOptions): Promise<boolean> {
-        return exists(this.getBuildPath(hostParts));
+        return hostParts.type === 'dev' ? Promise.resolve(true) : exists(this.getBuildPath(hostParts));
     }
 
     private getBuildPath(params: IProjectOptions): string {
@@ -355,7 +355,7 @@ export abstract class Application {
     }
 
     private static getDefaultUrl(host: string): string {
-        return `https://${host}:80/`;
+        return `https://${host}/`;
     }
 
     private static isPage(url: string): boolean {
